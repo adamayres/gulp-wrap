@@ -12,6 +12,8 @@ npm install --save-dev gulp-wrap
 
 Then, add it to your `gulpfile.js`:
 
+*Important:* The stream contents will be available in the template using the `contents` key.
+
 **Wrap the contents with an inline template:**
 
 ```javascript
