@@ -1,6 +1,6 @@
 # gulp-wrap [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
 
-> A gulp plugin to wrap the stream contents with a lodash template. [gulp](https://github.com/gulpjs/gulp)
+> A [gulp](https://github.com/gulpjs/gulp) plugin to wrap the stream contents with a [lodash](http://lodash.com/docs#template) template.
 
 ## Usage
 
@@ -49,7 +49,7 @@ This gulp plugin wraps the stream contents in a template. If you want the stream
 ### wrap(template\[,data\]\[,options\])
 
 #### template
-Type: `String` or `Object
+Type: `String` or `Object`
 
 The template to used. When a `String` then it will be used as the template. When an `Object` then the template will be loaded from file.
 
