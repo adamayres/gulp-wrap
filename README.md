@@ -42,6 +42,8 @@ gulp.src("./src/*.json")
 	.pipe(gulp.dest("./dist"));
 ```
 
+This gulp plugin wraps the stream contents in a template. If you want the stream contents to be the templates [gulp-template](https://github.com/sindresorhus/gulp-template).
+
 ## API
 
 ### wrap(template\[,data\]\[,options\])
