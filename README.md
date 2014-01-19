@@ -61,9 +61,9 @@ Type: `String`
 The file location of the template.
 
 #### data
-Type: `Object`
+Type: `Object` or `String`
 
-The data object that is passed on to the [lodash](http://lodash.com/docs#template) template call.
+If a **string** is given for the data then the plugin expects a data object with this name on the file object. The data object with this name can be added to the file object by another plugin. If an **object** is given the data object is passed directly on to the [lodash](http://lodash.com/docs#template) template call.
 
 #### options
 Type: `Object`
