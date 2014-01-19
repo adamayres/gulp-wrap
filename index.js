@@ -15,6 +15,14 @@ function compile(contents, template, data, options) {
 }
 
 module.exports = function (opts, data, options) {
+  // The data value is read once when the plugin is initialized.
+  // If it is an object the same data is used for all files.
+  // If data is a string save the datatype 
+  // and the string value. The mapped function must read the
+  // data saved on each file in each round.
+  var datatype = typeof data,
+      datavalue = data;
+
   if (!opts) {
     throw new PluginError(PLUGIN_NAME, PLUGIN_NAME + ': Missing template parameter');
   }
@@ -37,8 +45,8 @@ module.exports = function (opts, data, options) {
     // If data is a string the given name is treated as a property
     // on the file object. The data object is created and the 
     // file property is copied to the data object.
-    if (typeof data === "string") {
-      var _prop = data;
+    if (datatype === "string") {
+      var _prop = datavalue;
       data = {};
       data[_prop] = file[_prop];
     }
