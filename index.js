@@ -8,9 +8,10 @@ var PluginError = gutil.PluginError;
 
 var PLUGIN_NAME = 'gulp-wrap';
 
-function compile(contents, template, data, options){
+function compile(contents, template, vinyl, data, options){
   data = data !== undefined ? data : {};
   data.contents = contents;
+  data.relative = vinyl.relative;
   return tpl(template, data, options);
 }
 
@@ -31,7 +32,7 @@ module.exports = function(opts, data, options){
     if (gutil.isStream(file.contents)) {
       var through = es.through();
       var wait = es.wait(function(err, contents){
-        through.write(compile(contents, template, data, options));
+        through.write(compile(contents, template, file, data, options));
         through.end();
       });
       file.contents.pipe(wait);
@@ -39,7 +40,7 @@ module.exports = function(opts, data, options){
     }
 
     if (gutil.isBuffer(file.contents)) {
-      file.contents = new Buffer(compile(file.contents.toString('utf-8'), template, data, options));
+      file.contents = new Buffer(compile(file.contents.toString('utf-8'), template, file, data, options));
     }
 
     callback(null, file);
