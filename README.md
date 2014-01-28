@@ -12,8 +12,6 @@ npm install --save-dev gulp-wrap
 
 Then, add it to your `gulpfile.js`:
 
-*Important:* The stream contents will be available in the template using the `contents` key.
-
 **Wrap the contents with an inline template:**
 
 ```javascript
@@ -45,6 +43,10 @@ gulp.src("./src/*.json")
 ```
 
 This gulp plugin wraps the stream contents in a template. If you want the stream contents to be the templates use the [gulp-template](https://github.com/sindresorhus/gulp-template) plugin.
+
+## Template
+
+The stream contents will be available in the template using the `contents` key. Properties from the vinyl file will be available in the template under the `file` object and are local to that stream. User supplied `data` values will always take precedence over namespace clashes with the file properties.
 
 ## API
 

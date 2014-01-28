@@ -1,13 +1,13 @@
 'use strict';
 
-var fs = require('fs'),
-    es = require('event-stream'),
-    should = require('should');
+var fs = require('fs');
+var es = require('event-stream');
+var should = require('should');
 
 require('mocha');
 
 var gutil = require('gulp-util'),
-    wrap = require('../');
+  wrap = require('../');
 
 describe('gulp-wrap', function () {
 
@@ -142,6 +142,118 @@ describe('gulp-wrap', function () {
 
     stream.write(srcFile);
     stream.end();
+  });
+
+  it('should allow file props in the template data', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/hello.txt',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/hello.txt')
+    });
+
+    srcFile.someProp = 'someValue';
+
+    var stream = wrap('Contents: [<%= contents %>] - File prop: [<%= file.someProp %>]');
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      String(newFile.contents).should.equal('Contents: [Hello] - File prop: [someValue]');
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+  it('should make data props override file data', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/hello.txt',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/hello.txt')
+    });
+
+    srcFile.someProp = 'someValue';
+
+    var stream = wrap('Contents: [<%= contents %>] - File prop: [<%= file.someProp %>]', {
+      file: {
+        someProp: 'valueFromData'
+      }
+    });
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      String(newFile.contents).should.equal('Contents: [Hello] - File prop: [valueFromData]');
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+  it('should not pollute file data across multiple streams', function (done) {
+
+    var srcFile1 = new gutil.File({
+      path: 'test/fixtures/hello.txt',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/hello.txt')
+    });
+
+    srcFile1.somePropFor1 = 'someValueFrom1';
+
+    var srcFile2 = new gutil.File({
+      path: 'test/fixtures/hello2.txt',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/hello2.txt')
+    });
+
+    srcFile2.somePropFor2 = 'someValueFrom2';
+
+    var stream = wrap('Contents: [<%= contents %>] - File prop from 1: [<%= file.somePropFor1 %>] - File prop from 2: [<%= file.somePropFor2 %>]');
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      if (newFile.relative === 'hello.txt') {
+        String(newFile.contents).should.equal('Contents: [Hello] - File prop from 1: [someValueFrom1] - File prop from 2: []');
+      } else if (newFile.relative === 'hello2.txt') {
+        String(newFile.contents).should.equal('Contents: [Hello2] - File prop from 1: [] - File prop from 2: [someValueFrom2]');
+      }
+    });
+
+    stream.write(srcFile1);
+    stream.write(srcFile2);
+
+    stream.end();
+    done();
   });
 
 });
