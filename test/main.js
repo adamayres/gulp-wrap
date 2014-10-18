@@ -256,4 +256,39 @@ describe('gulp-wrap', function () {
     done();
   });
 
+  it('should allow for expressions', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/hello.txt',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/hello.txt')
+    });
+
+//    file.path => path/to/foo.png
+//    dirname   => to
+//    basename  => foo.png
+//    filename  => foo
+//    extension => png
+    var stream = wrap('<%= path.dirname(file.path) %> ; <%= path.basename(file.path) %> ; <%= path.basename(file.path).split(path.extname(file.path))[0] %>, <%= path.extname(file.path) %>', { file: { path: 'path/to/foo.png'}}, { imports: { path: require('path') }});
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      console.log(String(newFile.contents))
+      //String(newFile.contents).should.equal(String(expectedFile.contents));
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
 });
