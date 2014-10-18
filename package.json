@@ -27,12 +27,12 @@
   "dependencies": {
     "event-stream": "*",
     "lodash.template": "~2.4.1",
-    "gulp-util": "~2.2.13",
-    "node.extend": "~1.0.9"
+    "gulp-util": "~3.0.1",
+    "node.extend": "~1.1.2"
   },
   "devDependencies": {
-    "mocha": "~1.14.0",
-    "should": "~2.1.0"
+    "mocha": "~1.21.5",
+    "should": "~4.0.4"
   },
   "engines": {
     "node": ">=0.9",
