@@ -11,6 +11,9 @@ var PLUGIN_NAME = 'gulp-wrap';
 
 function compile(file, contents, template, data, options){
   data = data !== undefined ? data : {};
+  if (file.data) {
+    data = extend(true, {}, file.data, data);
+  }
   data.contents = contents;
   /*
    * Add `file` field to source obj used when interpolating
