@@ -291,4 +291,91 @@ describe('gulp-wrap', function () {
     stream.end();
   });
 
+  it('should parse JSON files by default', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/data.json',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/data.json')
+    });
+
+    var stream = wrap('BEFORE <%= contents.name %>: <%= contents.job %> AFTER');
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      String(newFile.contents).should.equal('BEFORE Roget: Thesaurus AFTER');
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+  it('should parse YAML files by default', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/data.yml',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/data.yml')
+    });
+
+    var stream = wrap('BEFORE <%= contents.name %>: <%= contents.job %> AFTER');
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      String(newFile.contents).should.equal('BEFORE Roget: Thesaurus AFTER');
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
+  it('option parse=false should disable file parsing', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/data.yml',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/data.yml')
+    });
+
+    var stream = wrap('<%= contents %>', null, {parse: false});
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      String(newFile.contents).should.equal('name: Roget\njob: Thesaurus\n');
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
 });

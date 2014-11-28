@@ -10,8 +10,23 @@ var PluginError = gutil.PluginError;
 var PLUGIN_NAME = 'gulp-wrap';
 
 function compile(file, contents, template, data, options){
-  data = data !== undefined ? data : {};
+  options = options || {};
+
+  data = data || {};
   data.contents = contents;
+
+  // attempt to parse the file contents for JSON or YAML files
+  if (options.parse !== false) {
+    try {
+      if (file.path.match(/json$/))
+        data.contents = JSON.parse(contents)
+      else if (file.path.match(/ya?ml$/))
+        data.contents = require('js-yaml').safeLoad(contents)
+    } catch (err) {
+      throw new PluginError(PLUGIN_NAME, PLUGIN_NAME + ': error parsing ' + file.path)
+    }
+  }
+
   /*
    * Add `file` field to source obj used when interpolating
    * the template. Ensure the user supplied data object is not
@@ -20,7 +35,7 @@ function compile(file, contents, template, data, options){
    * object should take precedence over properties supplied
    * by the file.
    */
-  data = extend(true, {}, { file: file }, data);
+  data = extend(true, { file: file }, data);
   return tpl(template, data, options);
 }
 
