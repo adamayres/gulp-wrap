@@ -32,6 +32,16 @@ gulp.src("./src/*.json")
 	.pipe(gulp.dest("./dist"));
 ```
 
+**Use parsed contents within a template (supports JSON and YAML):**
+
+```javascript
+var wrap = require("gulp-wrap");
+
+gulp.src("./src/*.json")
+	.pipe(wrap('Hello, <%= contents.title %>, have a <%= contents.adjective %> day.'))
+	.pipe(gulp.dest("./dist"));
+```
+
 **Provide additional data and options for template processing:**
 
 ```javascript
@@ -46,7 +56,7 @@ This gulp plugin wraps the stream contents in a template. If you want the stream
 
 ## Template
 
-The stream contents will be available in the template using the `contents` key. Properties from the vinyl file will be available in the template under the `file` object and are local to that stream. User supplied `data` values will always take precedence over namespace clashes with the file properties.
+The stream contents will be available in the template using the `contents` key. If the file extension is `json`, `yaml`, or `yml` then the contents will be parsed before being passed to the template. Properties from the vinyl file will be available in the template under the `file` object and are local to that stream. User supplied `data` values will always take precedence over namespace clashes with the file properties.
 
 ## API
 
@@ -71,6 +81,11 @@ The data object that is passed on to the [lodash](http://lodash.com/docs#templat
 Type: `Object`
 
 The options object that is passed on to the [lodash](http://lodash.com/docs#template) template call.
+
+#### options.parse
+Type: `Boolean`
+
+Set to explicit `false` value to disable automatic JSON and YAML parsing.
 
 ## License
 

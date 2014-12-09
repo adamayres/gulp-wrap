@@ -26,8 +26,9 @@
   },
   "dependencies": {
     "event-stream": "*",
-    "lodash.template": "~2.4.1",
     "gulp-util": "~3.0.1",
+    "js-yaml": "^3.2.3",
+    "lodash.template": "~2.4.1",
     "node.extend": "~1.1.2"
   },
   "devDependencies": {
