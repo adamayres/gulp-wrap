@@ -36,6 +36,12 @@ function compile(file, contents, template, data, options){
    * by the file.
    */
   data = extend(true, { file: file }, data);
+  /*
+   * Allow template to be a function, pass it the data object.
+   */
+  if (typeof template === 'function') {
+    template = template(data);
+  }
   return tpl(template, data, options);
 }
 
