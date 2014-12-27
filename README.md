@@ -63,9 +63,9 @@ The stream contents will be available in the template using the `contents` key. 
 ### wrap(template\[,data\]\[,options\])
 
 #### template
-Type: `String` or `Object`
+Type: `String` or `Object` or `Function`
 
-The template to used. When a `String` then it will be used as the template. When an `Object` then the template will be loaded from file.
+The template to used. When a `String` then it will be used as the template. When an `Object` then the template will be loaded from file. When a `Function` then the function will be called and should return the template content. This function get the `data` object as first parameter.
 
 #### template.src
 Type: `String`
