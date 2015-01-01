@@ -35,7 +35,8 @@ function compile(file, contents, template, data, options){
    * object should take precedence over properties supplied
    * by the file.
    */
-  data = extend(true, { file: file }, data);
+  data = extend(true, { file: file }, file.data, data);
+
   /*
    * Allow template to be a function, pass it the data object.
    */
