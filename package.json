@@ -1,6 +1,6 @@
 {
   "name": "gulp-wrap",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A gulp plugin to wrap the stream contents with a lodash template.",
   "keywords": [
     "gulpplugin",
