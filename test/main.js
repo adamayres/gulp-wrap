@@ -256,6 +256,40 @@ describe('gulp-wrap', function () {
     done();
   });
 
+  it('should merge file.data property', function (done) {
+
+    var srcFile = new gutil.File({
+      path: 'test/fixtures/hello.txt',
+      cwd: 'test/',
+      base: 'test/fixtures',
+      contents: fs.readFileSync('test/fixtures/hello.txt')
+    });
+
+    srcFile.data = {
+      someProp1: 'someValue1',
+      someProp2: 'someValue2',
+    };
+
+    var stream = wrap('Contents: [<%= contents %>] - File prop: [<%= someProp1 %>] [<%= someProp2 %>]');
+
+    stream.on('error', function (err) {
+      should.exist(err);
+      done(err);
+    });
+
+    stream.on('data', function (newFile) {
+
+      should.exist(newFile);
+      should.exist(newFile.contents);
+
+      String(newFile.contents).should.equal('Contents: [Hello] - File prop: [someValue1] [someValue2]');
+      done();
+    });
+
+    stream.write(srcFile);
+    stream.end();
+  });
+
   it('should allow for expressions', function (done) {
 
     var srcFile = new gutil.File({
