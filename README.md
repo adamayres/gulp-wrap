@@ -18,8 +18,8 @@ Then, add it to your `gulpfile.js`:
 var wrap = require("gulp-wrap");
 
 gulp.src("./src/*.json")
-	.pipe(wrap('angular.module(\'text\', []).value(<%= contents %>);'))
-	.pipe(gulp.dest("./dist"));
+    .pipe(wrap('angular.module(\'text\', []).value(<%= contents %>);'))
+    .pipe(gulp.dest("./dist"));
 ```
 
 **Wrap the contents with a template from file:**
@@ -28,8 +28,8 @@ gulp.src("./src/*.json")
 var wrap = require("gulp-wrap");
 
 gulp.src("./src/*.json")
-	.pipe(wrap({ src: 'path/to/template.txt'}))
-	.pipe(gulp.dest("./dist"));
+    .pipe(wrap({ src: 'path/to/template.txt'}))
+    .pipe(gulp.dest("./dist"));
 ```
 
 **Use parsed contents within a template (supports JSON and YAML):**
@@ -38,8 +38,8 @@ gulp.src("./src/*.json")
 var wrap = require("gulp-wrap");
 
 gulp.src("./src/*.json")
-	.pipe(wrap('Hello, <%= contents.title %>, have a <%= contents.adjective %> day.'))
-	.pipe(gulp.dest("./dist"));
+    .pipe(wrap('Hello, <%= contents.title %>, have a <%= contents.adjective %> day.'))
+    .pipe(gulp.dest("./dist"));
 ```
 
 **Provide additional data and options for template processing:**
@@ -48,8 +48,8 @@ gulp.src("./src/*.json")
 var wrap = require("gulp-wrap");
 
 gulp.src("./src/*.json")
-	.pipe(wrap('BEFORE <%= data.contents %> <%= data.someVar %> AFTER', { someVar: 'someVal'}, { variable: 'data' }))
-	.pipe(gulp.dest("./dist"));
+    .pipe(wrap('BEFORE <%= data.contents %> <%= data.someVar %> AFTER', { someVar: 'someVal'}, { variable: 'data' }))
+    .pipe(gulp.dest("./dist"));
 ```
 
 This gulp plugin wraps the stream contents in a template. If you want the stream contents to be the templates use the [gulp-template](https://github.com/sindresorhus/gulp-template) plugin.
@@ -86,6 +86,12 @@ The options object that is passed on to the [lodash](http://lodash.com/docs#temp
 Type: `Boolean`
 
 Set to explicit `false` value to disable automatic JSON and YAML parsing.
+
+#### options.engine
+Type: `String`
+
+Set the [consolidate template engine](https://www.npmjs.com/package/consolidate) to use. (default to `lodash`).
+Using another engine that `lodash` may require installation of additional node package.
 
 ## License
 

@@ -2,15 +2,19 @@
 
 var es = require('event-stream');
 var gutil = require('gulp-util');
-var tpl = require('lodash.template');
+var consolidate = require('consolidate');
 var fs = require('fs');
 var extend = require('node.extend');
 var PluginError = gutil.PluginError;
 
 var PLUGIN_NAME = 'gulp-wrap';
 
-function compile(file, contents, template, data, options){
+function compile(file, contents, template, data, options, callback){
   options = options || {};
+
+  if (!options.engine) {
+    options.engine = 'lodash';
+  }
 
   data = data || {};
   data.contents = contents;
@@ -18,12 +22,13 @@ function compile(file, contents, template, data, options){
   // attempt to parse the file contents for JSON or YAML files
   if (options.parse !== false) {
     try {
-      if (file.path.match(/json$/))
-        data.contents = JSON.parse(contents)
-      else if (file.path.match(/ya?ml$/))
-        data.contents = require('js-yaml').safeLoad(contents)
+      if (file.path.match(/json$/)) {
+        data.contents = JSON.parse(contents);
+      } else if (file.path.match(/ya?ml$/)) {
+        data.contents = require('js-yaml').safeLoad(contents);
+      }
     } catch (err) {
-      throw new PluginError(PLUGIN_NAME, PLUGIN_NAME + ': error parsing ' + file.path)
+      throw new PluginError(PLUGIN_NAME, PLUGIN_NAME + ': error parsing ' + file.path);
     }
   }
 
@@ -43,7 +48,9 @@ function compile(file, contents, template, data, options){
   if (typeof template === 'function') {
     template = template(data);
   }
-  return tpl(template, data, options);
+  data = extend(data, options);
+
+  consolidate[options.engine].render(template, data, callback);
 }
 
 module.exports = function(opts, data, options){
@@ -63,19 +70,32 @@ module.exports = function(opts, data, options){
     if (gutil.isStream(file.contents)) {
       var through = es.through();
       var wait = es.wait(function(err, contents){
-        through.write(compile(file, contents, template, data, options));
-        through.end();
+        compile(file, contents, template, data, options, function(compileErr, output) {
+          if (compileErr) {
+            callback(compileErr);
+          } else {
+            through.write(output);
+            through.end();
+          }
+        });
       });
 
       file.contents.pipe(wait);
       file.contents = through;
+      callback(null, file);
+    } else if (gutil.isBuffer(file.contents)) {
+      compile(file, file.contents.toString('utf-8'), template, data, options, function(compileErr, output) {
+        if (compileErr) {
+          callback(compileErr);
+        } else {
+          file.contents = new Buffer(output);
+          callback(null, file);
+        }
+      });
+    } else {
+      callback(null, file);
     }
 
-    if (gutil.isBuffer(file.contents)) {
-      file.contents = new Buffer(compile(file, file.contents.toString('utf-8'), template, data, options));
-    }
-
-    callback(null, file);
   }
 
   return es.map(wrap);

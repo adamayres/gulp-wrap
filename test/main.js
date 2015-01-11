@@ -404,7 +404,7 @@ describe('gulp-wrap', function () {
       should.exist(newFile);
       should.exist(newFile.contents);
 
-      String(newFile.contents).should.equal('name: Roget\njob: Thesaurus\n');
+      String(newFile.contents).should.equal('name: Roget\njob: Thesaurus');
       done();
     });
 
