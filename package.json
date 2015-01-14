@@ -1,11 +1,20 @@
 {
   "name": "gulp-wrap",
   "version": "0.9.0",
-  "description": "A gulp plugin to wrap the stream contents with a lodash template.",
+  "description": "A gulp plugin to wrap the stream contents with a template.",
+  "repository": "adamayres/gulp-wrap",
+  "author": {
+    "name": "Adam Ayres",
+    "email": "magicaj@gmail.com",
+    "url": "https://github.com/adamayres"
+  },
   "files": [
     "index.js",
     "LICENSE"
   ],
+  "scripts": {
+    "test": "mocha"
+  },
   "keywords": [
     "gulpplugin",
     "wrap",
@@ -14,20 +23,6 @@
     "consolidate",
     "gulp"
   ],
-  "homepage": "https://github.com/adamayres/gulp-wrap",
-  "bugs": "https://github.com/adamayres/gulp-wrap/issues",
-  "author": {
-    "name": "Adam Ayres",
-    "email": "magicaj@gmail.com",
-    "url": "https://github.com/adamayres"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/adamayres/gulp-wrap.git"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
   "dependencies": {
     "bufferstreams": "^0.0.2",
     "consolidate": "^0.10.0",
