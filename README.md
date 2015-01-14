@@ -1,4 +1,5 @@
 # gulp-wrap [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
+[![Coverage Status](https://img.shields.io/coveralls/adamayres/gulp-wrap.svg?style=flat)](https://coveralls.io/r/adamayres/gulp-wrap)
 
 > A [gulp](https://github.com/gulpjs/gulp) plugin to wrap the stream contents with a [lodash](http://lodash.com/docs#template) template.
 
