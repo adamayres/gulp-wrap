@@ -1,5 +1,10 @@
-# gulp-wrap [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
+# gulp-wrap
+
+[![NPM version](https://img.shields.io/npm/v/gulp-wrap.svg?style=flat)](https://www.npmjs.com/package/gulp-wrap)
+[![Build Status](https://secure.travis-ci.org/adamayres/gulp-wrap.svg?branch=master)](http://travis-ci.org/adamayres/gulp-wrap)
 [![Coverage Status](https://img.shields.io/coveralls/adamayres/gulp-wrap.svg?style=flat)](https://coveralls.io/r/adamayres/gulp-wrap)
+[![Dependency Status](https://img.shields.io/david/adamayres/gulp-wrap.svg?style=flat&label=deps)](https://david-dm.org/adamayres/gulp-wrap)
+[![devDependency Status](https://img.shields.io/david/dev/adamayres/gulp-wrap.svg?style=flat&label=devDeps)](https://david-dm.org/adamayres/gulp-wrap#info=devDependencies)
 
 > A [gulp](https://github.com/gulpjs/gulp) plugin to wrap the stream contents with a [lodash](http://lodash.com/docs#template) template.
 
@@ -97,12 +102,3 @@ Using another engine that `lodash` may require installation of additional node p
 ## License
 
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
-
-[npm-url]: https://npmjs.org/package/gulp-wrap
-[npm-image]: https://badge.fury.io/js/gulp-wrap.png
-
-[travis-url]: http://travis-ci.org/adamayres/gulp-wrap
-[travis-image]: https://secure.travis-ci.org/adamayres/gulp-wrap.png?branch=master
-
-[depstat-url]: https://david-dm.org/adamayres/gulp-wrap
-[depstat-image]: https://david-dm.org/adamayres/gulp-wrap.png
