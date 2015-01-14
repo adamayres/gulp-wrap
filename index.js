@@ -1,12 +1,13 @@
 'use strict';
 
+var path = require('path');
+
 var BufferStreams = require('bufferstreams');
-var gutil = require('gulp-util');
-var through = require('through2');
 var consolidate = require('consolidate');
-var fs = require('graceful-fs');
 var extend = require('node.extend');
-var PluginError = gutil.PluginError;
+var fs = require('graceful-fs');
+var PluginError = require('gulp-util').PluginError;
+var through = require('through2');
 
 var PLUGIN_NAME = 'gulp-wrap';
 
@@ -44,10 +45,12 @@ module.exports = function(opts, data, options){
     function compile(contents, done){
       // attempt to parse the file contents for JSON or YAML files
       if (options.parse !== false) {
+        var ext = path.extname(file.path).toLowerCase();
+        
         try {
-          if (file.path.match(/json$/)) {
+          if (ext === '.json') {
             contents = JSON.parse(contents);
-          } else if (file.path.match(/ya?ml$/)) {
+          } else if (ext === '.yml' || ext === '.yaml' ) {
             contents = require('js-yaml').safeLoad(contents);
           }
         } catch (err) {
@@ -63,7 +66,7 @@ module.exports = function(opts, data, options){
        * object should take precedence over properties supplied
        * by the file.
        */
-      var newData = extend({ file: file }, file.data, data, options, { contents: contents });
+      var newData = extend({ file: file }, options, data, file.data, { contents: contents });
 
       /*
        * Allow template to be a function, pass it the data object.
