@@ -17,7 +17,6 @@
     "email": "magicaj@gmail.com",
     "url": "https://github.com/adamayres"
   },
-  "main": "./index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/adamayres/gulp-wrap.git"
@@ -26,16 +25,18 @@
     "test": "mocha"
   },
   "dependencies": {
+    "bufferstreams": "^0.0.2",
     "consolidate": "^0.10.0",
-    "event-stream": "*",
-    "gulp-util": "~3.0.1",
+    "graceful-fs": "^3.0.5",
+    "gulp-util": "^3.0.2",
     "js-yaml": "^3.2.3",
-    "lodash": "~2.4.1",
-    "node.extend": "~1.1.2"
+    "lodash": "^2.4.1",
+    "node.extend": "^1.1.2",
+    "through2": "^0.6.3"
   },
   "devDependencies": {
-    "mocha": "~1.21.5",
-    "should": "~4.0.4"
+    "mocha": "^2.1.0",
+    "should": "^4.6.0"
   },
   "engines": {
     "node": ">=0.10",

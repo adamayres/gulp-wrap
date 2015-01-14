@@ -1,13 +1,12 @@
 'use strict';
 
-var fs = require('fs');
-var es = require('event-stream');
+var fs = require('graceful-fs');
 var should = require('should');
 
 require('mocha');
 
 var gutil = require('gulp-util'),
-  wrap = require('../');
+  wrap = require('..');
 
 describe('gulp-wrap', function () {
 
@@ -68,11 +67,11 @@ describe('gulp-wrap', function () {
       should.exist(newFile);
       should.exist(newFile.contents);
 
-      newFile.contents.pipe(es.wait(function (err, data) {
+      newFile.contents.on('data', function (err, data) {
         should.not.exist(err);
-        data.should.equal(String(expectedFile.contents));
+        String(data).should.equal(String(expectedFile.contents));
         done();
-      }));
+      });
     });
 
     stream.write(srcFile);
@@ -80,9 +79,7 @@ describe('gulp-wrap', function () {
   });
 
   it('should error when no template is provided', function () {
-    (function(){
-      wrap();
-    }).should.throw('gulp-wrap: Missing template parameter');
+    wrap.should.throw('gulp-wrap: Missing template parameter');
   });
 
   it('should handle a template from a file src via buffer', function (done) {
