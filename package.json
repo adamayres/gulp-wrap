@@ -39,10 +39,13 @@
     "tryit": "^1.0.1"
   },
   "devDependencies": {
+    "eslint": "^0.11.0",
     "istanbul": "^0.3.5",
     "istanbul-coveralls": "^1.0.1",
+    "jscs": "^1.10.0",
     "mocha": "^2.1.0",
-    "should": "^4.6.0"
+    "simple-bufferstream": "0.0.4",
+    "vinyl": "^0.4.6"
   },
   "engines": {
     "node": ">=0.10",
