@@ -13,6 +13,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "pretest": "jscs *.js test/test.js && eslint *.js test/test.js",
     "test": "_mocha",
     "coverage": "istanbul cover _mocha",
     "coveralls": "${npm_package_scripts_coverage} && istanbul-coveralls"
@@ -52,4 +53,10 @@
       "type": "MIT"
     }
   ]
+  "jscsConfig": {
+    "preset": "google",
+    "maximumLineLength": 98,
+    "requireBlocksOnNewline": true,
+    "validateLineBreaks": "LF"
+  }
 }
