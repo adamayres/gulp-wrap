@@ -28,12 +28,14 @@
   "dependencies": {
     "bufferstreams": "^0.0.2",
     "consolidate": "^0.10.0",
-    "graceful-fs": "^3.0.5",
+    "es6-promise": "^2.0.1",
+    "fs-readfile-promise": "^1.1.0",
     "gulp-util": "^3.0.2",
     "js-yaml": "^3.2.3",
     "lodash": "^2.4.1",
     "node.extend": "^1.1.2",
-    "through2": "^0.6.3"
+    "through2": "^0.6.3",
+    "tryit": "^1.0.1"
   },
   "devDependencies": {
     "istanbul": "^0.3.5",
