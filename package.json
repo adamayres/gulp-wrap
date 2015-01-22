@@ -8,6 +8,13 @@
     "email": "magicaj@gmail.com",
     "url": "https://github.com/adamayres"
   },
+  "contributors": [
+    {
+      "name": "Shinnosuke Watanabe",
+      "email": "snnskwtnb@gmail.com",
+      "url": "https://github.com/shinnn"
+    }
+  ],
   "licenses": [
     {
       "type": "MIT",
