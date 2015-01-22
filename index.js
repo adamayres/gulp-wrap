@@ -2,7 +2,6 @@
 
 var path = require('path');
 
-var BufferStreams = require('bufferstreams');
 var consolidate = require('consolidate');
 var extend = require('node.extend');
 var PluginError = require('gulp-util').PluginError;
@@ -10,6 +9,7 @@ var ES6Promise = global.Promise || require('es6-promise').Promise;
 var readFile = require('fs-readfile-promise');
 var through = require('through2');
 var tryit = require('tryit');
+var VinylBufferStream = require('vinyl-bufferstream');
 
 var PLUGIN_NAME = 'gulp-wrap';
 
@@ -35,14 +35,7 @@ module.exports = function gulpWrap(opts, data, options) {
     options.engine = 'lodash';
   }
 
-  function gulpWrapTransform(file, enc, cb) {
-    var self = this;
-
-    if (file.isNull()) {
-      cb(null, file);
-      return;
-    }
-
+  return through.obj(function gulpWrapTransform(file, enc, cb) {
     function compile(contents, done) {
       // attempt to parse the file contents for JSON or YAML files
       if (options.parse !== false) {
@@ -79,36 +72,17 @@ module.exports = function gulpWrap(opts, data, options) {
       }, done);
     }
 
-    if (file.isStream()) {
-      file.contents = file.contents.pipe(new BufferStreams(function(none, buf, done) {
-        compile(buf, function(err, contents) {
-          process.nextTick(function() {
-            if (err) {
-              self.emit('error', err);
-              done(err);
-            } else {
-              done(null, contents);
-              self.push(file);
-            }
-            cb();
-          });
-        });
-      }));
-      return;
-    }
+    var run = new VinylBufferStream(compile);
+    var self = this;
 
-    compile(file.contents, function(err, contents) {
-      process.nextTick(function() {
-        if (err) {
-          self.emit('error', err);
-        } else {
-          file.contents = contents;
-          self.push(file);
-        }
-        cb();
-      });
+    run(file, function(err, contents) {
+      if (err) {
+        self.emit('error', err);
+      } else {
+        file.contents = contents;
+        self.push(file);
+      }
+      cb();
     });
-  }
-
-  return through.obj(gulpWrapTransform);
+  });
 };
