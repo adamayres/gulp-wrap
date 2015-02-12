@@ -22,8 +22,7 @@
     }
   ],
   "files": [
-    "index.js",
-    "LICENSE"
+    "index.js"
   ],
   "scripts": {
     "pretest": "jscs *.js test/test.js && eslint *.js test/test.js",
@@ -40,22 +39,22 @@
     "gulp"
   ],
   "dependencies": {
-    "consolidate": "^0.10.0",
+    "consolidate": "^0.11.0",
     "es6-promise": "^2.0.1",
     "fs-readfile-promise": "^1.1.0",
-    "gulp-util": "^3.0.2",
-    "js-yaml": "^3.2.3",
-    "lodash": "^2.4.1",
+    "gulp-util": "^3.0.3",
+    "js-yaml": "^3.2.6",
+    "lodash": "^3.1.0",
     "node.extend": "^1.1.2",
     "through2": "^0.6.3",
     "tryit": "^1.0.1",
-    "vinyl-bufferstream": "^1.0.0"
+    "vinyl-bufferstream": "^1.0.1"
   },
   "devDependencies": {
-    "eslint": "^0.12.0",
+    "eslint": "^0.14.1",
     "istanbul": "^0.3.5",
     "istanbul-coveralls": "^1.0.1",
-    "jscs": "^1.10.0",
+    "jscs": "^1.11.3",
     "mocha": "^2.1.0",
     "simple-bufferstream": "0.0.4",
     "vinyl": "^0.4.6"
