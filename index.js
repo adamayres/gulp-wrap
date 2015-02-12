@@ -62,13 +62,17 @@ module.exports = function gulpWrap(opts, data, options) {
           template = template(newData);
         }
 
-        consolidate[options.engine].render(template, newData, function(err, result) {
-          if (err) {
-            done(new PluginError(PLUGIN_NAME, err));
-            return;
-          }
-          done(null, new Buffer(result));
-        });
+        try {
+          consolidate[options.engine].render(template, newData, function(err, result) {
+            if (err) {
+              done(new PluginError(PLUGIN_NAME, err));
+              return;
+            }
+            done(null, new Buffer(result));
+          });
+        } catch (err) {
+          done(new PluginError(PLUGIN_NAME, err));
+        }
       }, done);
     }
 
