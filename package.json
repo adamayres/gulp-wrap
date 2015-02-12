@@ -1,6 +1,6 @@
 {
   "name": "gulp-wrap",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "A gulp plugin to wrap the stream contents with a template.",
   "repository": "adamayres/gulp-wrap",
   "author": {
