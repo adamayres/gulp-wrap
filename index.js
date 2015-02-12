@@ -69,7 +69,7 @@ module.exports = function gulpWrap(opts, data, options) {
           }
           done(null, new Buffer(result));
         });
-      }, done);
+      }, done).catch(done);
     }
 
     var run = new VinylBufferStream(compile);

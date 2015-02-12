@@ -12,7 +12,7 @@ require('mocha');
 describe('gulp-wrap', function() {
   it('should pass an empty file as it is', function(done) {
     wrap('')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isNull());
       done();
@@ -22,7 +22,7 @@ describe('gulp-wrap', function() {
 
   it('should produce expected file via buffer', function(done) {
     wrap('<%= contents %>bar')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'foobar');
@@ -33,7 +33,7 @@ describe('gulp-wrap', function() {
 
   it('should produce expected file via stream', function(done) {
     wrap('a<%= contents %>c')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isStream());
       file.contents.on('data', function(data) {
@@ -50,7 +50,7 @@ describe('gulp-wrap', function() {
 
   it('should handle a template from a file', function(done) {
     wrap({src: 'test/fixture.jst'})
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'BEFORE Hello AFTER');
@@ -74,6 +74,7 @@ describe('gulp-wrap', function() {
       {someVar: 'someVal'},
       {variable: 'data'}
     )
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'BEFORE Hello someVal AFTER');
@@ -87,7 +88,7 @@ describe('gulp-wrap', function() {
     srcFile.someProp = 'someValue';
 
     wrap('Contents: [<%= contents %>] - File prop: [<%= file.someProp %>]')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'Contents: [Hello] - File prop: [someValue]');
@@ -103,7 +104,7 @@ describe('gulp-wrap', function() {
     wrap('<%= contents %> - <%= file.someProp %>', {
       file: {someProp: 'foo'}
     })
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'Hello - foo');
@@ -122,7 +123,7 @@ describe('gulp-wrap', function() {
     var expected = ['one  1', 'two  2'];
 
     var stream = wrap('<%= file.one %> <%= file.two %> <%= contents %>')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert(String(file.contents), expected.shift());
@@ -141,7 +142,7 @@ describe('gulp-wrap', function() {
     srcFile.data = {prop: 'foo'};
 
     wrap('<%= contents %> <%= prop %>')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'Hello foo');
@@ -152,6 +153,7 @@ describe('gulp-wrap', function() {
 
   it('should allow for expressions', function(done) {
     wrap('<%= path.dirname(file.path) %>', {file: {path: 'a/b'}}, {imports: {path: path}})
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'a');
@@ -165,7 +167,7 @@ describe('gulp-wrap', function() {
 
   it('should parse JSON files by default', function(done) {
     wrap('BEFORE <%= contents.name %> AFTER')
-    .on('error', assert.ifError)
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'BEFORE foo AFTER');
@@ -179,6 +181,7 @@ describe('gulp-wrap', function() {
 
   it('should parse YAML files by default', function(done) {
     wrap('BEFORE <%= contents.name %> AFTER')
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'BEFORE foo AFTER');
@@ -192,6 +195,7 @@ describe('gulp-wrap', function() {
 
   it('option parse=false should disable file parsing', function(done) {
     wrap('<%= contents %>', null, {parse: false})
+    .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'name: foo');
