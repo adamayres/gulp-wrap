@@ -83,6 +83,26 @@ describe('gulp-wrap', function() {
     .end(new File({contents: new Buffer('Hello')}));
   });
 
+  it('should allow for dynamic options', function(done) {
+    var srcFile = new File({contents: new Buffer('Hello')});
+    srcFile.dataProp = 'data';
+
+    wrap(
+      'BEFORE <%= data.contents %> <%= data.someVar %> AFTER',
+      {someVar: 'someVal'},
+      function (file) {
+        return {variable: file.dataProp};
+      }
+    )
+    .on('error', done)
+    .on('data', function(file) {
+      assert(file.isBuffer());
+      assert.equal(String(file.contents), 'BEFORE Hello someVal AFTER');
+      done();
+    })
+    .end(srcFile);
+  });
+
   it('should allow file props in the template data', function(done) {
     var srcFile = new File({contents: new Buffer('Hello')});
     srcFile.someProp = 'someValue';
@@ -108,6 +128,24 @@ describe('gulp-wrap', function() {
     .on('data', function(file) {
       assert(file.isBuffer());
       assert.equal(String(file.contents), 'Hello - foo');
+      done();
+    })
+    .end(srcFile);
+  });
+
+  it('should allow for dynamic data', function (done) {
+    var srcFile = new File({contents: new Buffer('Hello')});
+    srcFile.someProp = 'bar';
+
+    wrap('<%= contents %> - <%= file.someProp %>', function (file) {
+      return {
+        file: {someProp: 'foo-' + file.someProp}
+      };
+    })
+    .on('error', done)
+    .on('data', function(file) {
+      assert(file.isBuffer());
+      assert.equal(String(file.contents), 'Hello - foo-bar');
       done();
     })
     .end(srcFile);
@@ -206,5 +244,4 @@ describe('gulp-wrap', function() {
       contents: new Buffer('name: foo')
     }));
   });
-
 });
