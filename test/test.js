@@ -90,7 +90,7 @@ describe('gulp-wrap', function() {
     wrap(
       'BEFORE <%= data.contents %> <%= data.someVar %> AFTER',
       {someVar: 'someVal'},
-      function (file) {
+      function(file) {
         return {variable: file.dataProp};
       }
     )
@@ -133,11 +133,11 @@ describe('gulp-wrap', function() {
     .end(srcFile);
   });
 
-  it('should allow for dynamic data', function (done) {
+  it('should allow for dynamic data', function(done) {
     var srcFile = new File({contents: new Buffer('Hello')});
     srcFile.someProp = 'bar';
 
-    wrap('<%= contents %> - <%= file.someProp %>', function (file) {
+    wrap('<%= contents %> - <%= file.someProp %>', function(file) {
       return {
         file: {someProp: 'foo-' + file.someProp}
       };
