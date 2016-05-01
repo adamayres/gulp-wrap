@@ -24,7 +24,7 @@ Then, add it to your `gulpfile.js`:
 var wrap = require("gulp-wrap");
 
 gulp.src("./src/*.json")
-    .pipe(wrap('angular.module(\'text\', []).value(<%= contents %>);'))
+    .pipe(wrap('angular.module(\'text\', []).value(<%= contents %>);', {}, { parse: false /* do not parse the JSON file for template data */ }))
     .pipe(gulp.dest("./dist"));
 ```
 
