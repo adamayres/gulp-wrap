@@ -79,14 +79,14 @@ Type: `String`
 The file location of the template.
 
 #### data
-Type: `Object`
+Type: `Object` or `Function`
 
-The data object that is passed on to the [lodash](http://lodash.com/docs#template) template call.
+The data object that is passed on to the [lodash](http://lodash.com/docs#template) template call. When a `Function` then the function will be called and should return the `Object` data used in the template.  
 
 #### options
-Type: `Object`
+Type: `Object` or `Function`
 
-The options object that is passed on to the [lodash](http://lodash.com/docs#template) template call.
+The options object that is passed on to the [lodash](http://lodash.com/docs#template) template call. When a `Function` then the function will be called and should return the `Object` used as the options.
 
 #### options.parse
 Type: `Boolean`

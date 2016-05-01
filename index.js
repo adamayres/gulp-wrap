@@ -59,7 +59,7 @@ module.exports = function gulpWrap(opts, data, options) {
           if (!err) {
             return;
           }
-          throw new PluginError(PLUGIN_NAME, PLUGIN_NAME + ': error parsing ' + file.path);
+          throw new PluginError(PLUGIN_NAME, 'Error parsing ' + file.path);
         });
       }
 

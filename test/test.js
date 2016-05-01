@@ -2,6 +2,7 @@
 
 var assert = require('assert');
 var path = require('path');
+var expect = require('expect.js');
 
 var bufferToStream = require('simple-bufferstream');
 var File = require('vinyl');
@@ -50,6 +51,19 @@ describe('gulp-wrap', function() {
 
   it('should handle a template from a file', function(done) {
     wrap({src: 'test/fixture.jst'})
+    .on('error', done)
+    .on('data', function(file) {
+      assert(file.isBuffer());
+      assert.equal(String(file.contents), 'BEFORE Hello AFTER');
+      done();
+    })
+    .end(new File({contents: new Buffer('Hello')}));
+  });
+
+  it('should handle a template from a function', function(done) {
+    wrap(function() {
+      return 'BEFORE <%= contents %> AFTER';
+    })
     .on('error', done)
     .on('data', function(file) {
       assert(file.isBuffer());
@@ -243,5 +257,52 @@ describe('gulp-wrap', function() {
       path: 'data.yml',
       contents: new Buffer('name: foo')
     }));
+  });
+
+  it('should throw exception object passed for template and no src property is set',
+      function() {
+    expect(wrap).withArgs({}).to.throwException(function(e) {
+      expect(e.message).to.equal('Expecting `src` option.');
+    });
+  });
+
+  it('should throw exception if data file parse is invalid', function(done) {
+    expect(function() {
+      return wrap('<%= contents %>')
+      .end(new File({
+        path: 'data.json',
+        contents: new Buffer('This is an invalid JSON file.')
+      }));
+    }).to.throwException(function(e) {
+      expect(e.message).to.equal('Error parsing data.json');
+      done();
+    });
+  });
+
+  it('should throw exception if template is invalid', function(done) {
+    wrap('<%= contents.does.not.exist %>')
+    .on('error', function(err) {
+      expect(err.message).to.equal('Cannot read property \'not\' of undefined');
+      done();
+    })
+    .end(new File({
+      path: 'data.json',
+      contents: new Buffer('{"name": "foo"}')
+    }));
+  });
+
+  it('should handle if Promise object not available', function(done) {
+    delete require.cache[require.resolve('..')];
+    global.Promise = undefined;
+    var wrap = require('..');
+
+    wrap('<%= contents %>bar')
+    .on('error', done)
+    .on('data', function(file) {
+      assert(file.isBuffer());
+      assert.equal(String(file.contents), 'foobar');
+      done();
+    })
+    .end(new File({contents: new Buffer('foo')}));
   });
 });
