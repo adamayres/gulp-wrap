@@ -28,15 +28,23 @@ module.exports = function gulpWrap(opts, data, options) {
     promise = ES6Promise.resolve(opts);
   }
 
-  data = data || {};
-  options = options || {};
-
-  if (!options.engine) {
-    options.engine = 'lodash';
-  }
-
   return through.obj(function gulpWrapTransform(file, enc, cb) {
     function compile(contents, done) {
+      if (typeof data === 'function') {
+        data = data.call(null, file);
+      }
+
+      if (typeof options === 'function') {
+        options = options.call(null, file);
+      }
+
+      data = data || {};
+      options = options || {};
+
+      if (!options.engine) {
+        options.engine = 'lodash';
+      }
+
       // attempt to parse the file contents for JSON or YAML files
       if (options.parse !== false) {
         var ext = path.extname(file.path).toLowerCase();
