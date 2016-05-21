@@ -10,6 +10,7 @@ var readFile = require('fs-readfile-promise');
 var through = require('through2');
 var tryit = require('tryit');
 var VinylBufferStream = require('vinyl-bufferstream');
+consolidate.requires.lodash = require('lodash');
 
 var PLUGIN_NAME = 'gulp-wrap';
 
