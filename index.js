@@ -31,47 +31,47 @@ module.exports = function gulpWrap(opts, data, options) {
 
   return through.obj(function gulpWrapTransform(file, enc, cb) {
     function compile(contents, done) {
-      if (typeof data === 'function') {
-        data = data.call(null, file);
-      }
+      var tplData = function(file) {
+        var mydata = (typeof data === 'function' ? data(file) : data) || {};
+        return mydata;
+      };
 
-      if (typeof options === 'function') {
-        options = options.call(null, file);
-      }
-
-      data = data || {};
-      options = options || {};
-
-      if (!options.engine) {
-        options.engine = 'lodash';
-      }
-
-      // attempt to parse the file contents for JSON or YAML files
-      if (options.parse !== false) {
-        var ext = path.extname(file.path).toLowerCase();
-
-        tryit(function() {
-          if (ext === '.json') {
-            contents = JSON.parse(contents);
-          } else if (ext === '.yml' || ext === '.yaml') {
-            contents = require('js-yaml').safeLoad(contents);
-          }
-        }, function(err) {
-          if (!err) {
-            return;
-          }
-          throw new PluginError(PLUGIN_NAME, 'Error parsing ' + file.path);
-        });
-      }
-
-      var newData = extend({file: file}, options, data, file.data, {contents: contents});
+      var tplOptions = function(file) {
+        var opts = (typeof options === 'function' ? options(file) : options) || {};
+        if (!opts.engine) {
+          opts.engine = 'lodash';
+        }
+        return opts;
+      };
 
       promise.then(function(template) {
+        var data = tplData(file);
+        var opts = tplOptions(file);
+
+        // attempt to parse the file contents for JSON or YAML files
+        if (opts.parse !== false) {
+          try {
+            var ext = path.extname(file.path || '').toLowerCase();
+            if (ext === '.json') {
+              contents = JSON.parse(contents);
+            } else if (ext === '.yml' || ext === '.yaml') {
+              contents = require('js-yaml').safeLoad(contents);
+            }
+          } catch (err) {
+            done(new PluginError(PLUGIN_NAME, 'Error parsing ' + file.path));
+            return;
+          }
+        }
+
+        var newData = extend({file: file}, opts, data, file.data, {
+          contents: contents,
+        });
+
         if (typeof template === 'function') {
           template = template(newData);
         }
 
-        consolidate[options.engine].render(template, newData, function(err, result) {
+        consolidate[opts.engine].render(template, newData, function(err, result) {
           if (err) {
             done(new PluginError(PLUGIN_NAME, err));
             return;
