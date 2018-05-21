@@ -4,7 +4,7 @@ var path = require('path');
 
 var consolidate = require('consolidate');
 var extend = require('node.extend');
-var PluginError = require('gulp-util').PluginError;
+var PluginError = require('plugin-error');
 var ES6Promise = global.Promise || require('es6-promise').Promise;
 var readFile = require('fs-readfile-promise');
 var through = require('through2');
