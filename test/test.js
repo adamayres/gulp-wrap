@@ -267,16 +267,18 @@ describe('gulp-wrap', function() {
   });
 
   it('should throw exception if data file parse is invalid', function(done) {
-    expect(function() {
-      return wrap('<%= contents %>')
-      .end(new File({
-        path: 'data.json',
-        contents: new Buffer('This is an invalid JSON file.')
-      }));
-    }).to.throwException(function(e) {
-      expect(e.message).to.equal('Error parsing data.json');
+    wrap('<%= contents %>')
+    .on('error', function(err) {
+      expect(err.message).to.equal('Error parsing data.json');
       done();
-    });
+    })
+    .on('data', function(file) {
+      done();
+    })
+    .end(new File({
+      path: 'data.json',
+      contents: new Buffer('This is an invalid JSON file.')
+    }));
   });
 
   it('should throw exception if template is invalid', function(done) {
