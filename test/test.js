@@ -29,7 +29,10 @@ describe('gulp-wrap', function() {
       assert.equal(String(file.contents), 'foobar');
       done();
     })
-    .end(new File({contents: new Buffer('foo')}));
+    .end(new File({
+      path: 'test/fixtures/fileBuffer.txt',
+      contents: Buffer.from('foo')
+    }));
   });
 
   it('should produce expected file via stream', function(done) {
@@ -42,7 +45,10 @@ describe('gulp-wrap', function() {
         done();
       });
     })
-    .end(new File({contents: bufferToStream('b')}));
+    .end(new File({
+      path: 'test/fixtures/fileStream.txt',
+      contents: bufferToStream('b')
+    }));
   });
 
   it('should error when no template is provided', function() {
@@ -57,7 +63,10 @@ describe('gulp-wrap', function() {
       assert.equal(String(file.contents), 'BEFORE Hello AFTER');
       done();
     })
-    .end(new File({contents: new Buffer('Hello')}));
+    .end(new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    }));
   });
 
   it('should handle a template from a function', function(done) {
@@ -70,7 +79,10 @@ describe('gulp-wrap', function() {
       assert.equal(String(file.contents), 'BEFORE Hello AFTER');
       done();
     })
-    .end(new File({contents: new Buffer('Hello')}));
+    .end(new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    }));
   });
 
   it('should fail when it cannot read the template file.', function(done) {
@@ -79,7 +91,10 @@ describe('gulp-wrap', function() {
       assert.equal(err.code, 'EISDIR');
       done();
     })
-    .end(new File({contents: new Buffer('Hello')}));
+    .end(new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    }));
   });
 
   it('should handle template data and options', function(done) {
@@ -94,11 +109,17 @@ describe('gulp-wrap', function() {
       assert.equal(String(file.contents), 'BEFORE Hello someVal AFTER');
       done();
     })
-    .end(new File({contents: new Buffer('Hello')}));
+    .end(new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    }));
   });
 
   it('should allow for dynamic options', function(done) {
-    var srcFile = new File({contents: new Buffer('Hello')});
+    var srcFile = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    });
     srcFile.dataProp = 'data';
 
     wrap(
@@ -118,7 +139,10 @@ describe('gulp-wrap', function() {
   });
 
   it('should allow file props in the template data', function(done) {
-    var srcFile = new File({contents: new Buffer('Hello')});
+    var srcFile = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    });
     srcFile.someProp = 'someValue';
 
     wrap('Contents: [<%= contents %>] - File prop: [<%= file.someProp %>]')
@@ -132,7 +156,10 @@ describe('gulp-wrap', function() {
   });
 
   it('should make data props override file data', function(done) {
-    var srcFile = new File({contents: new Buffer('Hello')});
+    var srcFile = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    });
     srcFile.someProp = 'bar';
 
     wrap('<%= contents %> - <%= file.someProp %>', {
@@ -148,7 +175,10 @@ describe('gulp-wrap', function() {
   });
 
   it('should allow for dynamic data', function(done) {
-    var srcFile = new File({contents: new Buffer('Hello')});
+    var srcFile = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    });
     srcFile.someProp = 'bar';
 
     wrap('<%= contents %> - <%= file.someProp %>', function(file) {
@@ -166,10 +196,16 @@ describe('gulp-wrap', function() {
   });
 
   it('should not pollute file data across multiple streams', function(done) {
-    var srcFile1 = new File({contents: new Buffer('1')});
+    var srcFile1 = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('1')
+    });
     srcFile1.foo = 'one';
 
-    var srcFile2 = new File({contents: new Buffer('2')});
+    var srcFile2 = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('2')
+    });
     srcFile2.bar = 'two';
 
     var expected = ['one  1', 'two  2'];
@@ -190,7 +226,10 @@ describe('gulp-wrap', function() {
   });
 
   it('should merge file.data property', function(done) {
-    var srcFile = new File({contents: new Buffer('Hello')});
+    var srcFile = new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('Hello')
+    });
     srcFile.data = {prop: 'foo'};
 
     wrap('<%= contents %> <%= prop %>')
@@ -213,7 +252,7 @@ describe('gulp-wrap', function() {
     })
     .end(new File({
       path: 'test/fixtures/hello.txt',
-      contents: new Buffer('Hello')
+      contents: Buffer.from('Hello')
     }));
   });
 
@@ -227,7 +266,7 @@ describe('gulp-wrap', function() {
     })
     .end(new File({
       path: 'data.json',
-      contents: new Buffer('{"name": "foo"}')
+      contents: Buffer.from('{"name": "foo"}')
     }));
   });
 
@@ -241,7 +280,7 @@ describe('gulp-wrap', function() {
     })
     .end(new File({
       path: 'data.yml',
-      contents: new Buffer('name: foo')
+      contents: Buffer.from('name: foo')
     }));
   });
 
@@ -255,7 +294,7 @@ describe('gulp-wrap', function() {
     })
     .end(new File({
       path: 'data.yml',
-      contents: new Buffer('name: foo')
+      contents: Buffer.from('name: foo')
     }));
   });
 
@@ -271,7 +310,7 @@ describe('gulp-wrap', function() {
       return wrap('<%= contents %>')
       .end(new File({
         path: 'data.json',
-        contents: new Buffer('This is an invalid JSON file.')
+        contents: Buffer.from('This is an invalid JSON file.')
       }));
     }).to.throwException(function(e) {
       expect(e.message).to.equal('Error parsing data.json');
@@ -287,7 +326,7 @@ describe('gulp-wrap', function() {
     })
     .end(new File({
       path: 'data.json',
-      contents: new Buffer('{"name": "foo"}')
+      contents: Buffer.from('{"name": "foo"}')
     }));
   });
 
@@ -303,6 +342,9 @@ describe('gulp-wrap', function() {
       assert.equal(String(file.contents), 'foobar');
       done();
     })
-    .end(new File({contents: new Buffer('foo')}));
+    .end(new File({
+      path: 'test/fixtures/hello.txt',
+      contents: Buffer.from('foo')
+    }));
   });
 });

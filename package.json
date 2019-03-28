@@ -1,6 +1,6 @@
 {
   "name": "gulp-wrap",
-  "version": "0.14.0",
+  "version": "0.2.0",
   "description": "A gulp plugin to wrap the stream contents with a template.",
   "repository": "adamayres/gulp-wrap",
   "author": {
@@ -39,26 +39,26 @@
     "gulp"
   ],
   "dependencies": {
-    "consolidate": "^0.14.1",
-    "es6-promise": "^3.1.2",
-    "fs-readfile-promise": "^2.0.1",
-    "js-yaml": "^3.2.6",
-    "lodash": "^4.11.1",
-    "node.extend": "^1.1.2",
-    "plugin-error": "^0.1.2",
-    "through2": "^2.0.1",
+    "consolidate": "^0.15.1",
+    "es6-promise": "^4.2.6",
+    "fs-readfile-promise": "^3.0.1",
+    "js-yaml": "^3.13.0",
+    "lodash": "^4.17.11",
+    "node.extend": "2.0.2",
+    "plugin-error": "^1.0.1",
+    "through2": "^3.0.1",
     "tryit": "^1.0.1",
     "vinyl-bufferstream": "^1.0.1"
   },
   "devDependencies": {
-    "eslint": "^2.9.0",
+    "eslint": "^5.15.3",
     "expect.js": "^0.3.1",
     "istanbul": "^0.4.3",
     "istanbul-coveralls": "^1.0.1",
-    "jscs": "^3.0.3",
-    "mocha": "^2.1.0",
+    "jscs": "^3.0.7",
+    "mocha": "^6.0.2",
     "simple-bufferstream": "1.0.0",
-    "vinyl": "^1.1.1"
+    "vinyl": "^1.2.0"
   },
   "engines": {
     "node": ">=0.10",

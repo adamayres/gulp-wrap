@@ -76,7 +76,7 @@ module.exports = function gulpWrap(opts, data, options) {
             done(new PluginError(PLUGIN_NAME, err));
             return;
           }
-          done(null, new Buffer(result));
+          done(null, Buffer.from(result));
         });
       }, done).catch(done);
     }
