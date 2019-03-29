@@ -61,7 +61,7 @@
     "vinyl": "^1.2.0"
   },
   "engines": {
-    "node": ">=0.10",
+    "node": ">=6.14",
     "npm": ">=1.4.3"
   },
   "jscsConfig": {
