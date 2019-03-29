@@ -3,7 +3,6 @@ git:
   depth: 2
 language: node_js
 node_js:
-  - iojs
   - '6.14.0'
 after_script:
   - npm run-script coveralls
