@@ -25,7 +25,7 @@
     "index.js"
   ],
   "scripts": {
-    "pretest": "jscs *.js test/test.js && eslint *.js test/test.js --ignore-pattern 'node_modules/**' --ignore-pattern 'coverage/**'",
+    "pretest": "jscs *.js test/test.js && eslint *.js test/test.js",
     "test": "_mocha",
     "coverage": "istanbul cover _mocha",
     "coveralls": "${npm_package_scripts_coverage} && istanbul-coveralls"
