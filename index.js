@@ -31,15 +31,16 @@ module.exports = function gulpWrap(opts, data, options) {
 
   return through.obj(function gulpWrapTransform(file, enc, cb) {
     function compile(contents, done) {
-      if (typeof data === 'function') {
-        data = data.call(null, file);
+      var currentData = data;
+      if (typeof currentData === 'function') {
+        currentData = currentData.call(null, file);
       }
 
       if (typeof options === 'function') {
         options = options.call(null, file);
       }
 
-      data = data || {};
+      currentData = currentData || {};
       options = options || {};
 
       if (!options.engine) {
@@ -64,14 +65,14 @@ module.exports = function gulpWrap(opts, data, options) {
         });
       }
 
-      var newData = extend({file: file}, options, data, file.data, {contents: contents});
+      currentData = extend({file: file}, options, currentData, file.data, {contents: contents});
 
       promise.then(function(template) {
         if (typeof template === 'function') {
-          template = template(newData);
+          template = template(currentData);
         }
 
-        consolidate[options.engine].render(template, newData, function(err, result) {
+        consolidate[options.engine].render(template, currentData, function(err, result) {
           if (err) {
             done(new PluginError(PLUGIN_NAME, err));
             return;
