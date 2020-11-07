@@ -16,6 +16,9 @@ var PLUGIN_NAME = 'gulp-wrap';
 
 module.exports = function gulpWrap(opts, data, options) {
   var promise;
+  var dataFn;
+  var optionsFn;
+
   if (typeof opts === 'object') {
     if (typeof opts.src !== 'string') {
       throw new PluginError(PLUGIN_NAME, new TypeError('Expecting `src` option.'));
@@ -29,14 +32,22 @@ module.exports = function gulpWrap(opts, data, options) {
     promise = ES6Promise.resolve(opts);
   }
 
+  if (typeof data === 'function') {
+    dataFn = data;
+  }
+
+  if (typeof options === 'function') {
+    optionsFn = options;
+  }
+
   return through.obj(function gulpWrapTransform(file, enc, cb) {
     function compile(contents, done) {
-      if (typeof data === 'function') {
-        data = data.call(null, file);
+      if (dataFn) {
+        data = dataFn.call(null, file);
       }
 
-      if (typeof options === 'function') {
-        options = options.call(null, file);
+      if (optionsFn) {
+        options = optionsFn.call(null, file);
       }
 
       data = data || {};

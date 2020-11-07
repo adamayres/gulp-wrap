@@ -347,4 +347,62 @@ describe('gulp-wrap', function() {
       contents: Buffer.from('foo')
     }));
   });
+
+  it('should execute the `data` function for each file', function(done) {
+    var wrap = require('..');
+    var n = 0;
+
+    var stream = wrap('<%- stem %>', function(file) {
+      return {stem: file.stem};
+    })
+    .on('error', done)
+    .on('data', function(file) {
+      assert(file.isBuffer());
+      assert.equal(String(file.contents), file.stem);
+      if (++n === 2) {
+        done();
+      }
+    });
+
+    stream.write(new File({
+      path: 'path/to/first',
+      contents: Buffer.from(' ')
+    }));
+
+    stream.write(new File({
+      path: 'path/to/second',
+      contents: Buffer.from(' ')
+    }));
+
+    stream.end();
+  });
+
+  it('should execute the `options` function for each file', function(done) {
+    var wrap = require('..');
+    var n = 0;
+
+    var stream = wrap('<%- stem %>', {}, function(file) {
+      return {stem: file.stem};
+    })
+    .on('error', done)
+    .on('data', function(file) {
+      assert(file.isBuffer());
+      assert.equal(String(file.contents), file.stem);
+      if (++n === 2) {
+        done();
+      }
+    });
+
+    stream.write(new File({
+      path: 'path/to/first',
+      contents: Buffer.from(' ')
+    }));
+
+    stream.write(new File({
+      path: 'path/to/second',
+      contents: Buffer.from(' ')
+    }));
+
+    stream.end();
+  });
 });
