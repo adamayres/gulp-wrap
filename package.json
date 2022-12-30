@@ -56,7 +56,7 @@
     "istanbul": "^0.4.3",
     "istanbul-coveralls": "^1.0.1",
     "jscs": "^3.0.7",
-    "mocha": "^6.0.2",
+    "mocha": "^10.2.0",
     "simple-bufferstream": "1.0.0",
     "vinyl": "^1.2.0"
   },
